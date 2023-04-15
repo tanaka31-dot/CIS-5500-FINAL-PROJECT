@@ -1,0 +1,9 @@
+{
+    "rds_host": "cis-5500.cfvx8ph8zwij.us-east-1.rds.amazonaws.com",
+    "rds_port": "3306",
+    "rds_user": "admin",
+    "rds_password" : "113113113",
+    "rds_db": "Yelp_data",
+    "server_host": "localhost",
+    "server_port":"8080"
+  }
