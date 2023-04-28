@@ -1,5 +1,5 @@
 import React from 'react';
-import Navigation  from '../components/NavBar';
+import Navbar  from '../components/NavBar';
 
 function HomePage() {
     const bodyStyle = {
@@ -18,11 +18,11 @@ function HomePage() {
     
     return (
       <>
-      <Navigation/>
+      <Navbar/>
       <div style={bodyStyle}>
         <div>
         </div>
-        <h1 style={{ textAlign: 'center' }}>Welcome to Review Roam</h1>
+        <h1 style={{ textAlign: 'center' }}>Find your new favorite spot with Review Roam!</h1>
       </div>
     </>
     );
