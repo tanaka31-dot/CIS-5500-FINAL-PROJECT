@@ -10,6 +10,9 @@ app.use(cors({
 }));
 
 // Routes here
+app.get('/user/:user_id', routes.user);
+app.get('/business/:business_id', routes.business);
+app.get('/businesses', routes.businesses);
 
 app.listen(config.server_port, () => {
     console.log(`Server running at http://${config.server_host}:${config.server_port}/`)
