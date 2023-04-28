@@ -2,12 +2,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #fff; /* Set background color to white */
-  color: #333; /* Set text color to dark gray */
+  background-color: #fff; 
+  color: #333; 
   height: 60px;
   padding: 0 20px;
-  position: sticky; /* Set position to sticky */
-  top: 0; /* Stick to the top of the viewport */
+  position: sticky; 
+  top: 0;
   z-index: 999;
 }
 
@@ -15,57 +15,22 @@
   font-size: 24px;
 }
 
-.navbar-menu {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  transition: all 0.3s ease-in-out;
-  height: 0;
-  overflow: hidden;
-}
-
-.navbar-menu.active {
-  height: auto;
-}
-
-.navbar-menu a {
+.navbar-items a {
   color: #333;
   text-decoration: none;
   margin-right: 20px;
 }
 
-.navbar-toggle {
-  cursor: pointer;
-}
-
-.navbar-toggle span {
-  display: block;
-  height: 2px;
-  width: 25px;
-  margin: 5px;
-  background-color: #333;
-  border-radius: 2px;
-  transition: transform 0.3s ease-in-out;
-}
-
 @media (max-width: 768px) {
-  .navbar-menu {
-    position: absolute;
-    top: 60px;
-    left: 0;
-    width: 100%;
-    background-color: #333;
-    z-index: 1;
-  }
-
-  .navbar-menu.active {
-    height: auto;
-  }
-
-  .navbar-toggle {
-    display: block;
-  }
+  /* Add any responsive styles here */
 }
+
+.navbar-items a:hover {
+  border-radius: 10px;
+  padding: 8px;
+  background-color: lightgrey;
+}
+
 
 html, body {
   margin: 0;
@@ -73,6 +38,7 @@ html, body {
   width: 100%;
   height: 100%;
 }
+
 
 
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import Navbar from '../components/NavBar';
+import Navigation  from '../components/NavBar';
 
 function HomePage() {
     const bodyStyle = {
@@ -14,7 +14,7 @@ function HomePage() {
     
     return (
       <>
-      <Navbar/>
+      <Navigation/>
       <div style={bodyStyle}>
         <div>
         </div>
