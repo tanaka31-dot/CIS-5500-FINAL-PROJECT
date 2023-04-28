@@ -6,9 +6,9 @@ function Navbar() {
       <div className="navbar-logo">Review Roam</div>
       <div className="navbar-items">
         <a href="/">Home</a>
-        <a href="/">About</a>
-        <a href="/">Services</a>
-        <a href="/">Contact</a>
+        <a href="/">Businesses</a>
+        <a href="/">Users</a>
+        <a href="/">Reviews</a>
       </div>
     </nav>
   );
