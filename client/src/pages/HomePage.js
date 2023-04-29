@@ -1,8 +1,8 @@
-import React from 'react';
-import Navbar  from '../components/NavBar';
+import React from 'react'
+import Navbar from '../components/NavBar'
 
 function HomePage() {
-    const bodyStyle = {
+  const bodyStyle = {
     backgroundImage: `url('./homepage.jpeg')`,
     backgroundSize: 'cover',
     backgroundPosition: 'center center',
@@ -14,18 +14,19 @@ function HomePage() {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    };
-    
-    return (
-      <>
-      <Navbar/>
+  }
+
+  return (
+    <>
+      <Navbar />
       <div style={bodyStyle}>
-        <div>
-        </div>
-        <h1 style={{ textAlign: 'center' }}>Find your new favorite spot with Review Roam!</h1>
+        <div></div>
+        <h1 style={{ textAlign: 'center' }}>
+          Find your new favorite spot with Review Roam!
+        </h1>
       </div>
     </>
-    );
-  }
-  
-  export default HomePage;
+  )
+}
+
+export default HomePage

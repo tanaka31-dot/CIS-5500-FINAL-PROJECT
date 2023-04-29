@@ -1,5 +1,5 @@
-import { BrowserRouter, Routes, Route} from "react-router-dom";
-import HomePage from './pages/HomePage';
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import HomePage from './pages/HomePage'
 import BusinessesPage from './pages/Businesses'
 
 function App() {
@@ -12,7 +12,7 @@ function App() {
         </Routes>
       </BrowserRouter>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
