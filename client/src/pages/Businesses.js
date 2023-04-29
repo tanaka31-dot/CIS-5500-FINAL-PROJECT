@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Box, Container } from '@mui/material';
 import { NavLink } from 'react-router-dom';
+import Navbar  from '../components/NavBar';
+import '../components/styles.css'
 
 const config = require('../config.json');
 
@@ -13,24 +15,103 @@ export default function BusinessesPage() {
       .then(resJson => setbusinesses(resJson));
   }, []);
 
-  // flexFormat provides the formatting options for a "flexbox" layout that enables the album cards to
-  // be displayed side-by-side and wrap to the next line when the screen is too narrow. Flexboxes are
-  // incredibly powerful. You can learn more on MDN web docs linked below (or many other online resources)
-  // https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Flexbox
-  const flexFormat = { display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-evenly' };
+  const businessCard = {
+    width: '45%',
+    height: '180px',
+    border: '1px solid lightgrey',
+    borderRadius: '10px',
+    margin: '10px',
+    padding: '10px',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start', // align items to the top
+    transition: 'all .2s ease-in-out',
+  };
+  
+  const businessCardHover = {
+    transform: 'scale(1.05)',
+    boxShadow: '2px 2px 10px lightgrey',
+  };
+  
+  const flexFormat = {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-evenly',
+  };
 
+  function interpolateColors(color1, color2, ratio) {
+    ratio = Math.max(Math.min(Number(ratio), 1), 0);
+    const r1 = parseInt(color1.substring(1, 3), 16);
+    const g1 = parseInt(color1.substring(3, 5), 16);
+    const b1 = parseInt(color1.substring(5, 7), 16);
+    const r2 = parseInt(color2.substring(1, 3), 16);
+    const g2 = parseInt(color2.substring(3, 5), 16);
+    const b2 = parseInt(color2.substring(5, 7), 16);
+    const r = Math.round(r1 * (1 - ratio) + r2 * ratio);
+    const g = Math.round(g1 * (1 - ratio) + g2 * ratio);
+    const b = Math.round(b1 * (1 - ratio) + b2 * ratio);
+    const hex = "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+    return hex;
+  }
+  
   return (
+    <div>
+    <Navbar />
     <Container style={flexFormat}>
-    {businesses.map((business) =>
-      <Box
-        key={business.business_id}
-        p={3}
-        m={2}
-        style={{ background: 'white', borderRadius: '16px', border: '2px solid #000' }}
+    {businesses.map((business, index) => (
+  <Box
+  key={business.business_id}
+  style={
+    index % 2 === 0
+      ? { ...businessCard, background: 'white' }
+      : { ...businessCard, background: 'white' }
+  }
+  sx={{ ':hover': businessCardHover }}
+>
+  <NavLink to={`/business/${business.business_id}`} style={{ textDecoration: 'none' }}>
+    <h4 style={{ margin: '0', alignSelf: 'flex-start' }}>{business.name}</h4>
+    </NavLink>
+    <p style={{ margin: '0', alignSelf: 'flex-start' }}>{business.address}</p>
+
+    <div style={{ marginTop: '10px', display: 'flex' }}>
+  {Array.from({ length: 5 }, (_, i) => {
+    let color = 'lightgrey';
+    if (i < Math.floor(business.stars)) {
+      color = '#fe643d'; // full stars
+      console.log(color)
+    } else if (i === Math.floor(business.stars) && business.stars.toFixed(1) % 1 !== 0)  {
+      // add code for a gradient color
+      const starFraction = (business.stars % 1) * 100; // get the decimal part of the star rating
+      const gradientColor = interpolateColors('#fe643d', '#D3D3D3', starFraction / 100);
+      color = gradientColor;// half stars
+      console.log(gradientColor);
+    } 
+    return (
+      <div
+        key={i}
+        style={{
+          width: '20px',
+          height: '20px',
+          borderRadius: '10%',
+          backgroundColor: color,
+          marginRight: '5px',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
       >
-        <h4><NavLink to={`/business/${business.business_id}`}>{business.name}</NavLink></h4>
-      </Box>
-    )}
-  </Container>
+        <span style={{ color: '#ffffff' }}>&#9733;</span>
+      </div>
+    );
+  })}
+</div>
+
+</Box>
+
+))}
+    </Container>
+  </div>
   );
 }
+
