@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Box, Container, Pagination } from '@mui/material'
 import { NavLink } from 'react-router-dom'
-import Navbar from '../components/NavBar'
 import '../components/styles.css'
 
 const config = require('../config.json')
@@ -71,7 +70,6 @@ export default function BusinessesPage() {
 
   return (
     <div>
-      <Navbar />
       <Container style={flexFormat}>
         {businesses.map((business, index) => (
           <Box

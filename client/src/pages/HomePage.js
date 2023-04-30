@@ -1,5 +1,4 @@
 import React from 'react'
-import Navbar from '../components/NavBar'
 
 function HomePage() {
   const bodyStyle = {
@@ -17,15 +16,13 @@ function HomePage() {
   }
 
   return (
-    <>
-      <Navbar />
       <div style={bodyStyle}>
         <div></div>
         <h1 style={{ textAlign: 'center' }}>
           Find your new favorite spot with Review Roam!
         </h1>
       </div>
-    </>
+
   )
 }
 
