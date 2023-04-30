@@ -77,29 +77,18 @@ body {
   margin-bottom: 20px;
 }
 
-.one-business-page .business-stars {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-}
 
-.one-business-page .business-stars .star-icon {
-  color: #ff9529;
-  font-size: 24px;
-  margin-right: 5px;
-}
-
-.one-business-page .business-hours {
+.business-hours {
   margin-bottom: 20px;
 }
 
-.one-business-page .business-hours li {
+.business-hours li {
   display: flex;
   justify-content: space-between;
   margin-bottom: 5px;
 }
 
-.one-business-page .business-hours li span {
+.business-hours li span {
   font-weight: bold;
 }
 
@@ -115,7 +104,7 @@ body {
   margin: 0;
 }
 
-.one-business-page .categories li {
+.categories li {
   margin-right: 10px;
   margin-bottom: 5px;
   padding: 5px 10px;
@@ -123,28 +112,47 @@ body {
   border-radius: 5px;
 }
 
-.one-business-page .reviews {
+.business-reviews {
   margin-bottom: 20px;
+  margin-top: 20px;
 }
 
-.one-business-page .reviews h2 {
+.business-reviews h2 {
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 10px;
 }
 
-.one-business-page .reviews .review-item {
+.business-reviews .review-item {
   margin-bottom: 10px;
   padding: 10px;
   background-color: #f0f0f0;
   border-radius: 5px;
 }
 
-.one-business-page .reviews .review-item p {
+.business-reviews p {
   margin-bottom: 5px;
 }
 
-.one-business-page .reviews .review-item .review-date {
+.one-business-page .business-reviews .review-date {
   font-style: italic;
+}
+
+.icon-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.icon-wrapper {
+  display: inline-block;
+  margin: 0 10px;
+  border-radius: 10%;
+  background-color: #ddd;
+  padding: 10px;
+}
+
+.text {
+  margin-left: 0.5rem;
 }
 

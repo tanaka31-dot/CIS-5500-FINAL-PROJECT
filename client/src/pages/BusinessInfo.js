@@ -2,6 +2,11 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStar } from '@fortawesome/free-solid-svg-icons'
+import {
+  faLightbulb,
+  faFaceGrinSquint,
+  faFaceSurprise,
+} from '@fortawesome/free-regular-svg-icons'
 import '../components/styles.css'
 
 const config = require('../config.json')
@@ -50,11 +55,15 @@ function OneBusinessPage() {
       <div className="business-address">{business.address}</div>
 
       {business.stars && (
-         <div className="business-stars">
-         {[...Array(Math.floor(business.stars))].map((star, i) => (
-           <FontAwesomeIcon key={i} icon={faStar} style={{ color: "#ff9529" }} />
-         ))}
-       </div>
+        <div className="business-stars">
+          {[...Array(Math.floor(business.stars))].map((star, i) => (
+            <FontAwesomeIcon
+              key={i}
+              icon={faStar}
+              style={{ color: '#ff9529' }}
+            />
+          ))}
+        </div>
       )}
       {hours && (
         <div className="business-hours">
@@ -73,11 +82,31 @@ function OneBusinessPage() {
           <h3>Reviews:</h3>
           {reviews.map((review) => (
             <div key={review.id}>
+              <div>{review.name}</div>
               <div>{review.text}</div>
               <div className="review-stars">
                 {[...Array(Math.floor(review.stars))].map((star, i) => (
-                  <FontAwesomeIcon key={i} icon={faStar}  style={{ color: "#ff9529" }}  />
+                  <FontAwesomeIcon
+                    key={i}
+                    icon={faStar}
+                    style={{ color: '#ff9529' }}
+                  />
                 ))}
+                {review.date}
+              </div>
+              <div className="icon-container">
+                <div className="icon-wrapper">
+                  <FontAwesomeIcon icon={faLightbulb} />
+                  <span className="text">Useful {review.useful}</span>
+                </div>
+                <div className="icon-wrapper">
+                  <FontAwesomeIcon icon={faFaceGrinSquint} />
+                  <span className="text">Funny {review.funny}</span>
+                </div>
+                <div className="icon-wrapper">
+                  <FontAwesomeIcon icon={faFaceSurprise} />
+                  <span className="text">Cool {review.cool}</span>
+                </div>
               </div>
             </div>
           ))}
