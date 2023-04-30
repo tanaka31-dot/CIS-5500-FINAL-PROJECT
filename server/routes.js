@@ -51,7 +51,6 @@ const user = async function (req, res) {
 const business = async function (req, res) {
   //Given a user_id, returns all information about the user
   const id = req.params.user_id
-
   connection.query(
     `
   SELECT *
@@ -125,8 +124,69 @@ const businesses = async function (req, res) {
   )
 }
 
+//GET businesses/:business_id/reviews
+const businessReviews = async function (req, res) {
+  //Given a user_id, returns all information about the user
+  const id = req.params.business_id
+
+  connection.query(
+    `SELECT u.name, r.*
+    FROM Review r JOIN User u ON r.user_id = u.user_id 
+    WHERE r.business_id = ${id};`,
+    (err, data) => {
+      if (err || data.length === 0) {
+        console.log(err)
+        res.json({})
+      } else {
+        res.json({
+          review_id: data[0].review_id,
+          business_id: data[0].business_id,
+          user_id: data[0].user_id,
+          stars: data[0].stars,
+          date: data[0].date,
+          text: data[0].text,
+          useful: data[0].useful,
+          funny: data[0].funny,
+          cool: data[0].cool,
+        })
+      }
+    },
+  )
+}
+
+//GET businesses/:business_id/TIPS
+const businessTips = async function (req, res) {
+  //Given a user_id, returns all information about the user
+  const id = req.params.business_id
+
+  connection.query(
+    `SELECT u.name, r.*
+    FROM Review r JOIN User u ON r.user_id = u.user_id 
+    WHERE r.business_id = ${id};`,
+    (err, data) => {
+      if (err || data.length === 0) {
+        console.log(err)
+        res.json({})
+      } else {
+        res.json({
+          review_id: data[0].review_id,
+          business_id: data[0].business_id,
+          user_id: data[0].user_id,
+          stars: data[0].stars,
+          date: data[0].date,
+          text: data[0].text,
+          useful: data[0].useful,
+          funny: data[0].funny,
+          cool: data[0].cool,
+        })
+      }
+    },
+  )
+}
+
 module.exports = {
   user,
   business,
   businesses,
+  businessReviews,
 }
