@@ -146,7 +146,6 @@ const businessReviews = async function (req, res) {
 //GET businesses/:business_id/fivereviews
 const fiveReviews = async function (req, res) {
   const id = req.params.business_id
-  console.log(id)
   connection.query(
     `SELECT u.name, r.*
     FROM Review r JOIN User u ON r.user_id = u.user_id 
@@ -157,7 +156,6 @@ const fiveReviews = async function (req, res) {
         console.log(err)
         res.json({})
       } else {
-        console.log(data)
         res.json(data)
       }
     },

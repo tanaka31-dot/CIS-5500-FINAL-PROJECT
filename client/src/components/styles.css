@@ -61,3 +61,90 @@ body {
   font-size: 20px;
   color: white;
 }
+
+.one-business-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f8f8f8;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.one-business-page h1 {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.one-business-page .business-stars {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.one-business-page .business-stars .star-icon {
+  color: #ff9529;
+  font-size: 24px;
+  margin-right: 5px;
+}
+
+.one-business-page .business-hours {
+  margin-bottom: 20px;
+}
+
+.one-business-page .business-hours li {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.one-business-page .business-hours li span {
+  font-weight: bold;
+}
+
+.one-business-page .categories {
+  margin-bottom: 20px;
+}
+
+.one-business-page .categories ul {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.one-business-page .categories li {
+  margin-right: 10px;
+  margin-bottom: 5px;
+  padding: 5px 10px;
+  background-color: #e0e0e0;
+  border-radius: 5px;
+}
+
+.one-business-page .reviews {
+  margin-bottom: 20px;
+}
+
+.one-business-page .reviews h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.one-business-page .reviews .review-item {
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #f0f0f0;
+  border-radius: 5px;
+}
+
+.one-business-page .reviews .review-item p {
+  margin-bottom: 5px;
+}
+
+.one-business-page .reviews .review-item .review-date {
+  font-style: italic;
+}
+
