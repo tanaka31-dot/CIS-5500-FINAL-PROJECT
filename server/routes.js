@@ -221,7 +221,7 @@ top_business_categories is a VIEW for a complex query.
 const topTenCategories = async function (req, res) {
   connection.query(
     `
-    SELECT * FROM top_business_categories;
+    SELECT category FROM top_business_categories;
     `, (err, data) => {
       if (err || data.length === 0) {
         console.log(err)
