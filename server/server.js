@@ -15,6 +15,7 @@ app.use(
 app.get('/user/:user_id', routes.user)
 app.get('/business/:business_id', routes.business)
 app.get('/businesses', routes.businesses)
+app.get('/users', routes.users)
 
 app.listen(config.server_port, () => {
   console.log(
