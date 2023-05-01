@@ -14,9 +14,12 @@ connection.connect((err) => err && console.log(err))
  *ROUTES BELOW*
  ******************/
 
-// Route 1: GET /user/:user-id
+/*
+ Route 1: GET /user/:user-id
+ Given a user_id, returns all information about the user
+ */
 const user = async function (req, res) {
-  //Given a user_id, returns all information about the user
+
   const id = req.params.user_id
 
   connection.query(
@@ -47,9 +50,11 @@ const user = async function (req, res) {
   )
 }
 
-// Route 1: GET /business/:business_id
+/*
+ Route 1: GET /business/:business_id
+ Given a business id return all information of that business
+ */
 const business = async function (req, res) {
-  //Given a user_id, returns all information about the user
   const id = req.params.business_id
   connection.query(
     `
@@ -80,7 +85,10 @@ const business = async function (req, res) {
   )
 }
 
-//GET /businesses
+/*
+GET /businesses
+get all businesses on a specific page
+*/
 const businesses = async function (req, res) {
   const page = req.query.page
   const pageSize = req.query.page_size
@@ -103,7 +111,10 @@ const businesses = async function (req, res) {
   )
 }
 
-//GET /users
+/*
+GET /users
+Get all users on a specific page
+*/
 const users = async function (req, res) {
   const page = req.query.page
   const pageSize = req.query.page_size
@@ -126,7 +137,10 @@ const users = async function (req, res) {
   )
 }
 
-//GET businesses/:business_id/reviews
+/*
+GET businesses/:business_id/reviews
+Given a business id return the review and the name of the user who made the review
+*/
 const businessReviews = async function (req, res) {
   const id = req.params.business_id
 
@@ -146,8 +160,10 @@ const businessReviews = async function (req, res) {
 }
 
 
-
-//GET businesses/:business_id/tips
+/*
+GET businesses/:business_id/tips
+Given a business id return the tip and the name of the user who made the tip
+*/
 const businessTips = async function (req, res) {
   const id = req.params.business_id
 
@@ -168,7 +184,10 @@ const businessTips = async function (req, res) {
 
 
 
-//GET businesses/:business_id/hours
+/*
+GET businesses/:business_id/hours
+Given a business id return the business hours.
+*/
 const businessHours = async function (req, res) {
   const id = req.params.business_id
   connection.query(
@@ -194,6 +213,10 @@ const businessHours = async function (req, res) {
   )
 }
 
+/*
+GET /topTenCategories
+Return the ten most reviewed business categories.
+*/
 const topTenCategories = async function (req, res) {
   connection.query(
     `
@@ -218,6 +241,10 @@ const topTenCategories = async function (req, res) {
 }
 
 
+/*
+GET /bussinesses/:category
+Given a business category return the top 20 businesses that have that category ordered by stars and review count
+ */
 const businessesInCategory = async function (req, res) {
   const category = req.params.category
   connection.query(
@@ -238,6 +265,40 @@ const businessesInCategory = async function (req, res) {
   )
 }
 
+/*
+GET /user/:user_id/topfivecategories
+Given a user id return the top five most reviewed categories by the user
+*/
+const mostReviewedCategoryByUser = async function (req, res) {
+  const id = req.params.user_id
+  connection.query(
+    `
+    SELECT
+    SUBSTRING_INDEX(SUBSTRING_INDEX(b.categories, ';', n.n), ',', -1) AS category,
+    COUNT(*) AS count
+    FROM
+    Review r
+    INNER JOIN
+    Business b ON r.business_id = b.business_id
+    INNER JOIN
+    (SELECT 1 AS n UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5) n
+    ON LENGTH(b.categories) - LENGTH(REPLACE(b.categories, ',', '')) >= n.n - 1
+    WHERE r.user_id = ${id}
+    GROUP BY category
+    ORDER BY count DESC
+    LIMIT 5;
+    `, (err, data) => {
+      if (err || data.length === 0) {
+        console.log(err)
+        res.json({})
+      } else {
+        res.json(data)
+      }
+    },
+  )
+}
+
+
 module.exports = {
   user,
   users,
@@ -248,4 +309,5 @@ module.exports = {
   businessHours,
   topTenCategories,
   businessesInCategory,
+  mostReviewedCategoryByUser,
 }
