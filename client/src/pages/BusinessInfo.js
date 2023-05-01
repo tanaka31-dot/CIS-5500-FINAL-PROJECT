@@ -2,10 +2,12 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStar } from '@fortawesome/free-solid-svg-icons'
+import { NavLink } from 'react-router-dom'
 import {
   faLightbulb,
   faFaceGrinSquint,
   faFaceSurprise,
+  faThumbsUp,
 } from '@fortawesome/free-regular-svg-icons'
 import '../components/styles.css'
 
@@ -51,8 +53,13 @@ function OneBusinessPage() {
 
   return (
     <div className="one-business-page">
-      <h1 className="business-name">{business.name}</h1>
-      <div className="business-address">{business.address}</div>
+      <h1 className="business-name">
+        {business.name && business.name.replace(/['"]/g, '')}
+      </h1>
+      <div className="business-address">
+        {business.address && business.address.replace(/['"]/g, '')},{' '}
+        {business.city}, {business.state}, {business.postal_code}
+      </div>
 
       {business.stars && (
         <div className="business-stars">
@@ -70,7 +77,7 @@ function OneBusinessPage() {
           <h3>Hours:</h3>
           {Object.entries(hours).map(([day, hours]) => (
             <div key={day}>
-              <span>{day}: </span>
+              <span>{day.charAt(0).toUpperCase() + day.slice(1)}: </span>
               <span>{hours}</span>
             </div>
           ))}
@@ -81,10 +88,12 @@ function OneBusinessPage() {
         <div className="business-reviews">
           <h3>Reviews:</h3>
           {reviews.map((review) => (
-            <div key={review.id}>
-              <div>{review.name}</div>
-              <div>{review.text}</div>
-              <div className="review-stars">
+            <div className="review-item" key={review.id}>
+              <NavLink to={`/user/${review.user_id}`}>
+                <div className="review-name">{review.name}</div>
+              </NavLink>
+
+              <div className="margin">
                 {[...Array(Math.floor(review.stars))].map((star, i) => (
                   <FontAwesomeIcon
                     key={i}
@@ -92,8 +101,9 @@ function OneBusinessPage() {
                     style={{ color: '#ff9529' }}
                   />
                 ))}
-                {review.date}
+                <span className="review-date">{review.date}</span>
               </div>
+              <div>{review.text}</div>
               <div className="icon-container">
                 <div className="icon-wrapper">
                   <FontAwesomeIcon icon={faLightbulb} />
@@ -110,18 +120,32 @@ function OneBusinessPage() {
               </div>
             </div>
           ))}
+          <div style = {{marginTop: "10px"}}>Show all reviews</div>
         </div>
       )}
+      
       {tips && Array.isArray(tips) && (
-        <div className="business-tips">
+        <div className="business-reviews">
           <h3>Tips:</h3>
           {tips.map((tip) => (
-            <div key={tip.id}>
+            <div className="review-item" key={tip.id}>
+              <NavLink to={`/user/${tip.user_id}`}>
+                <div className="review-name">{tip.name}</div>
+              </NavLink>
+
+              <div className="tip-date">{tip.date}</div>
               <div>{tip.text}</div>
+              <div className="icon-container">
+                <div className="icon-wrapper">
+                  <FontAwesomeIcon icon={faThumbsUp} />
+                  <span className="text">Likes {tip.likes}</span>
+                </div>
+              </div>
             </div>
           ))}
         </div>
       )}
+      <div style = {{marginTop: "10px"}}>Show all tips</div>
     </div>
   )
 }

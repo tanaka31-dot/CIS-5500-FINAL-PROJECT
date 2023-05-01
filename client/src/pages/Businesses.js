@@ -9,14 +9,15 @@ export default function BusinessesPage() {
   const [businesses, setbusinesses] = useState([])
   const [page, setPage] = useState(1)
   const pageSize = 40
-  
+
+
   useEffect(() => {
     fetch(
       `http://${config.server_host}:${config.server_port}/businesses?page=${page}&page_size=${pageSize}`,
     )
       .then((res) => res.json())
       .then((resJson) => setbusinesses(resJson))
-  }, [page, pageSize])
+  }, [page])
 
   const businessCard = {
     width: '45%',
@@ -46,10 +47,11 @@ export default function BusinessesPage() {
   const handleChangePage = (e, newPage) => {
     // Can always go to previous page (TablePagination prevents negative pages)
     // but only fetch next page if we haven't reached the end (currently have full page of data)
-    if (newPage < page && businesses.length === pageSize) {
+    setPage(newPage)
+    //if (newPage < page && businesses.length === pageSize) {
       // Note that we set newPage + 1 since we store as 1 indexed but the default pagination gives newPage as 0 indexed
-      setPage(newPage + 1)
-    }
+      
+    //}
   }
 
   function interpolateColors(color1, color2, ratio) {
@@ -83,11 +85,17 @@ export default function BusinessesPage() {
           >
             <NavLink
               to={`/business/${business.business_id}`}
-              style={{ textDecoration: 'none' }}
+              style={{ textDecoration: 'underline' }}
             >
-              <h4 style={{ margin: '0', alignSelf: 'flex-start' }}>
+              <h3
+                style={{
+                  margin: '0',
+                  alignSelf: 'flex-start',
+                  color: '#000000',
+                }}
+              >
                 {business.name.replace(/['"]/g, '')}
-              </h4>
+              </h3>
             </NavLink>
             <p style={{ margin: '0', alignSelf: 'flex-start' }}>
               {business.address.replace(/['"]/g, '')}
@@ -133,10 +141,9 @@ export default function BusinessesPage() {
           </Box>
         ))}
         <Pagination
-          count={-1}
-          itemsPerPage={pageSize}
-          page={page - 1}
-          onPageChange={handleChangePage}
+          count={4365}
+          page={page}
+          onChange={handleChangePage}
         />
       </Container>
     </div>

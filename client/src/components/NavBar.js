@@ -6,16 +6,16 @@ function Navbar() {
     <nav className="navbar">
       <div className="navbar-logo">Review Roam</div>
       <div className="navbar-items">
-        <NavLink to="/" exact activeClassName="active">
+        <NavLink to="/" >
           Home
         </NavLink>
-        <NavLink to="/businesses" activeClassName="active">
+        <NavLink to="/businesses">
           Businesses
         </NavLink>
-        <NavLink to="/" activeClassName="active">
+        <NavLink to="/">
           Users
         </NavLink>
-        <NavLink to="/" activeClassName="active">
+        <NavLink to="/">
           Reviews
         </NavLink>
       </div>
