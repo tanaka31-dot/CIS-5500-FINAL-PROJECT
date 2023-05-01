@@ -96,7 +96,7 @@ const businesses = async function (req, res) {
         console.log(err)
         res.json([])
       } else {
-        //console.log(data)
+        console.log(data.length)
         res.json(data)
       }
     },
@@ -145,24 +145,7 @@ const businessReviews = async function (req, res) {
   )
 }
 
-//GET businesses/:business_id/fivereviews
-// const fiveReviews = async function (req, res) {
-//   const id = req.params.business_id
-//   connection.query(
-//     `SELECT u.name, r.*
-//     FROM Review r JOIN User u ON r.user_id = u.user_id 
-//     WHERE r.business_id = ${id}
-//     LIMIT 5`,
-//     (err, data) => {
-//       if (err || data.length === 0) {
-//         console.log(err)
-//         res.json({})
-//       } else {
-//         res.json(data)
-//       }
-//     },
-//   )
-// }
+
 
 //GET businesses/:business_id/tips
 const businessTips = async function (req, res) {
@@ -183,25 +166,7 @@ const businessTips = async function (req, res) {
   )
 }
 
-//GET businesses/:business_id/fivetips
-// const fiveTips = async function (req, res) {
-//   const id = req.params.business_id
 
-//   connection.query(
-//     `SELECT u.name, t.*
-//     FROM Tip t JOIN User u ON t.user_id = u.user_id
-//     WHERE t.business_id = ${id}
-//     LIMIT 5`,
-//     (err, data) => {
-//       if (err || data.length === 0) {
-//         console.log(err)
-//         res.json({})
-//       } else {
-//         res.json(data)
-//       }
-//     },
-//   )
-// }
 
 //GET businesses/:business_id/hours
 const businessHours = async function (req, res) {
@@ -252,6 +217,27 @@ const topTenCategories = async function (req, res) {
   )
 }
 
+
+const businessesInCategory = async function (req, res) {
+  const category = req.params.category
+  connection.query(
+    `
+    SELECT *
+    FROM Business 
+    WHERE categories LIKE "%${category}%" 
+    ORDER BY stars DESC, review_count DESC
+    LIMIT 20;
+    `, (err, data) => {
+      if (err || data.length === 0) {
+        console.log(err)
+        res.json({})
+      } else {
+        res.json(data)
+      }
+    },
+  )
+}
+
 module.exports = {
   user,
   users,
@@ -261,4 +247,5 @@ module.exports = {
   businessTips,
   businessHours,
   topTenCategories,
+  businessesInCategory,
 }

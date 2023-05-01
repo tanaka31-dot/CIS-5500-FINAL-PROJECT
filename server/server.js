@@ -20,6 +20,7 @@ app.get('/business/:business_id/tips', routes.businessTips)
 app.get('/business/:business_id/hours', routes.businessHours)
 app.get('/topTenCategories', routes.topTenCategories)
 app.get('/users', routes.users)
+app.get('/bussinesses/:category', routes.businessesInCategory)
 
 app.listen(config.server_port, () => {
   console.log(

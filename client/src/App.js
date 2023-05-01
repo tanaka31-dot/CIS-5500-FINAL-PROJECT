@@ -4,6 +4,7 @@ import BusinessesPage from './pages/Businesses'
 import UsersPage from './pages/Users'
 import Navbar from './components/NavBar'
 import OneBusinessPage from './pages/BusinessInfo'
+import CategoryBusinesses from './pages/CategoryBusinesses'
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/businesses" element={<BusinessesPage />} />
           <Route path="/business/:business_id" element={<OneBusinessPage />} />
           <Route path="/users" element={<UsersPage />} />
+          <Route path="/bussinesses/:category" element={<CategoryBusinesses/>}/>
         </Routes>
       </BrowserRouter>
     </div>
