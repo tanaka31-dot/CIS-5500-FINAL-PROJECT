@@ -216,19 +216,12 @@ const businessHours = async function (req, res) {
 /*
 GET /topTenCategories
 Return the ten most reviewed business categories.
+top_business_categories is a VIEW for a complex query.
 */
 const topTenCategories = async function (req, res) {
   connection.query(
     `
-    SELECT SUBSTRING_INDEX(SUBSTRING_INDEX(categories, ';', numbers.n), ',', -1) AS category, COUNT(*) AS num_reviews
-    FROM Business
-    JOIN (SELECT 1 n UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6
-      UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9 UNION ALL SELECT 10) numbers
-      ON CHAR_LENGTH(categories) - CHAR_LENGTH(REPLACE(categories, ',', '')) >= numbers.n - 1
-      JOIN Review ON Business.business_id = Review.business_id
-      GROUP BY category
-      ORDER BY num_reviews DESC
-      LIMIT 10;
+    SELECT * FROM top_business_categories;
     `, (err, data) => {
       if (err || data.length === 0) {
         console.log(err)
