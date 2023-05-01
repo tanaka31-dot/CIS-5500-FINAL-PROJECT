@@ -27,12 +27,12 @@ function useBusinessData(businessId) {
       .then((resJson) => setbusiness(resJson))
 
     fetch(
-      `http://${config.server_host}:${config.server_port}/business/${businessId}/fivereviews`,
+      `http://${config.server_host}:${config.server_port}/business/${businessId}/reviews`,
     )
       .then((res) => res.json())
       .then((resJson) => setReviews(resJson))
     fetch(
-      `http://${config.server_host}:${config.server_port}/business/${businessId}/fivetips`,
+      `http://${config.server_host}:${config.server_port}/business/${businessId}/tips`,
     )
       .then((res) => res.json())
       .then((resJson) => setTips(resJson))
@@ -120,7 +120,6 @@ function OneBusinessPage() {
               </div>
             </div>
           ))}
-          <div style = {{marginTop: "10px"}}>Show all reviews</div>
         </div>
       )}
       
@@ -145,7 +144,6 @@ function OneBusinessPage() {
           ))}
         </div>
       )}
-      <div style = {{marginTop: "10px"}}>Show all tips</div>
     </div>
   )
 }

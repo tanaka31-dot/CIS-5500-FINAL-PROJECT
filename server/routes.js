@@ -146,23 +146,23 @@ const businessReviews = async function (req, res) {
 }
 
 //GET businesses/:business_id/fivereviews
-const fiveReviews = async function (req, res) {
-  const id = req.params.business_id
-  connection.query(
-    `SELECT u.name, r.*
-    FROM Review r JOIN User u ON r.user_id = u.user_id 
-    WHERE r.business_id = ${id}
-    LIMIT 5`,
-    (err, data) => {
-      if (err || data.length === 0) {
-        console.log(err)
-        res.json({})
-      } else {
-        res.json(data)
-      }
-    },
-  )
-}
+// const fiveReviews = async function (req, res) {
+//   const id = req.params.business_id
+//   connection.query(
+//     `SELECT u.name, r.*
+//     FROM Review r JOIN User u ON r.user_id = u.user_id 
+//     WHERE r.business_id = ${id}
+//     LIMIT 5`,
+//     (err, data) => {
+//       if (err || data.length === 0) {
+//         console.log(err)
+//         res.json({})
+//       } else {
+//         res.json(data)
+//       }
+//     },
+//   )
+// }
 
 //GET businesses/:business_id/tips
 const businessTips = async function (req, res) {
@@ -184,24 +184,24 @@ const businessTips = async function (req, res) {
 }
 
 //GET businesses/:business_id/fivetips
-const fiveTips = async function (req, res) {
-  const id = req.params.business_id
+// const fiveTips = async function (req, res) {
+//   const id = req.params.business_id
 
-  connection.query(
-    `SELECT u.name, t.*
-    FROM Tip t JOIN User u ON t.user_id = u.user_id
-    WHERE t.business_id = ${id}
-    LIMIT 5`,
-    (err, data) => {
-      if (err || data.length === 0) {
-        console.log(err)
-        res.json({})
-      } else {
-        res.json(data)
-      }
-    },
-  )
-}
+//   connection.query(
+//     `SELECT u.name, t.*
+//     FROM Tip t JOIN User u ON t.user_id = u.user_id
+//     WHERE t.business_id = ${id}
+//     LIMIT 5`,
+//     (err, data) => {
+//       if (err || data.length === 0) {
+//         console.log(err)
+//         res.json({})
+//       } else {
+//         res.json(data)
+//       }
+//     },
+//   )
+// }
 
 //GET businesses/:business_id/hours
 const businessHours = async function (req, res) {
@@ -259,8 +259,6 @@ module.exports = {
   businesses,
   businessReviews,
   businessTips,
-  fiveReviews,
-  fiveTips,
   businessHours,
   topTenCategories,
 }
