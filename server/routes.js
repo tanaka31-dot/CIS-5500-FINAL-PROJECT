@@ -108,13 +108,14 @@ const users = async function (req, res) {
   const page = req.query.page
   const pageSize = req.query.page_size
   const offset = (page - 1) * pageSize
-  connection.query(
-    `
-  SELECT *
-  FROM User
-  LIMIT ${pageSize}
-  OFFSET ${offset};`,
-    (err, data) => {
+
+  connection.query(`
+    SELECT *
+    FROM User
+    ORDER BY review_count DESC
+    LIMIT ${pageSize}
+    OFFSET ${offset}
+  `,(err, data) => {
       if (err || data.length === 0) {
         console.log(err)
         res.json([])
@@ -253,6 +254,7 @@ const topTenCategories = async function (req, res) {
 
 module.exports = {
   user,
+  users,
   business,
   businesses,
   businessReviews,

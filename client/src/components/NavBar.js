@@ -12,7 +12,7 @@ function Navbar() {
         <NavLink to="/businesses">
           Businesses
         </NavLink>
-        <NavLink to="/">
+        <NavLink to="/users" activeClassName="active">
           Users
         </NavLink>
         <NavLink to="/">
