@@ -2,6 +2,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import HomePage from './pages/HomePage'
 import BusinessesPage from './pages/Businesses'
 import UsersPage from './pages/Users'
+import Navbar from './components/NavBar'
+import OneBusinessPage from './pages/BusinessInfo'
 
 function App() {
   return (
