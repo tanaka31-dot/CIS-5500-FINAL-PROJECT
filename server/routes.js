@@ -65,7 +65,7 @@ const business = async function (req, res) {
           name: data[0].name,
           address: data[0].address,
           city: data[0].city,
-          state: data[0].city,
+          state: data[0].state,
           postal_code: data[0].postal_code,
           latitude: data[0].latitude,
           longitude: data[0].longitude,
@@ -96,13 +96,15 @@ const businesses = async function (req, res) {
         console.log(err)
         res.json([])
       } else {
+        //console.log(data)
         res.json(data)
       }
     },
   )
+}
 
-  //GET /users
-  const users = async function (req, res) {
+//GET /users
+const users = async function (req, res) {
   const page = req.query.page
   const pageSize = req.query.page_size
   const offset = (page - 1) * pageSize
@@ -121,7 +123,6 @@ const businesses = async function (req, res) {
       }
     },
   )
-}
 }
 
 //GET businesses/:business_id/reviews
@@ -227,6 +228,29 @@ const businessHours = async function (req, res) {
   )
 }
 
+const topTenCategories = async function (req, res) {
+  connection.query(
+    `
+    SELECT SUBSTRING_INDEX(SUBSTRING_INDEX(categories, ';', numbers.n), ',', -1) AS category, COUNT(*) AS num_reviews
+    FROM Business
+    JOIN (SELECT 1 n UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6
+      UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9 UNION ALL SELECT 10) numbers
+      ON CHAR_LENGTH(categories) - CHAR_LENGTH(REPLACE(categories, ',', '')) >= numbers.n - 1
+      JOIN Review ON Business.business_id = Review.business_id
+      GROUP BY category
+      ORDER BY num_reviews DESC
+      LIMIT 10;
+    `, (err, data) => {
+      if (err || data.length === 0) {
+        console.log(err)
+        res.json({})
+      } else {
+        res.json(data)
+      }
+    },
+  )
+}
+
 module.exports = {
   user,
   business,
@@ -236,4 +260,5 @@ module.exports = {
   fiveReviews,
   fiveTips,
   businessHours,
+  topTenCategories,
 }

@@ -18,6 +18,7 @@ app.get('/businesses', routes.businesses)
 app.get('/business/:business_id/fivereviews', routes.fiveReviews)
 app.get('/business/:business_id/fivetips', routes.fiveTips)
 app.get('/business/:business_id/hours', routes.businessHours)
+app.get('/topTenCategories', routes.topTenCategories)
 
 app.listen(config.server_port, () => {
   console.log(
