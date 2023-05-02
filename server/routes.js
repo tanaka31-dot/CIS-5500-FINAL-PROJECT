@@ -112,6 +112,38 @@ const businesses = async function (req, res) {
 }
 
 /*
+GET /topCities
+Gets cities with with highest average star rating and activity across all buildings 
+*/
+const topCities = async function (req, res) {
+
+  connection.query(
+    `
+    WITH Cities AS (
+      SELECT b.city, AVG(b.stars) AS avg_business_rating, COUNT(DISTINCT t.tip_id) AS num_tips
+      FROM Business b
+      JOIN Tip t ON b.business_id=t.business_id
+      GROUP BY b.city
+    )
+    SELECT city, (avg_business_rating * num_tips) AS ranking
+    FROM Cities
+    ORDER BY ranking DESC 
+    LIMIT 15
+  `,
+    (err, data) => {
+      if (err || data.length === 0) {
+        console.log(err)
+        res.json([])
+      } else {
+        res.json(data)
+      }
+    },
+  )
+}
+
+
+
+/*
 GET /users
 Get all users on a specific page
 */
@@ -303,4 +335,5 @@ module.exports = {
   topTenCategories,
   businessesInCategory,
   mostReviewedCategoryByUser,
+  topCities
 }

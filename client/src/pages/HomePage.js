@@ -72,6 +72,12 @@ function HomePage() {
           </div>
         ))}
       </div>
+      <div>
+        <NavLink to={`/topCities`}>
+          CLICK THIS
+        </NavLink>
+
+      </div>
     </div>
   );  
 }
