@@ -239,7 +239,6 @@ const userReviews = async function (req, res) {
         console.log(err)
         res.json({})
       } else {
-        console.log("REVIEW DATA :", data)
         res.json(data)
       }
     },
@@ -258,7 +257,6 @@ const userTips = async function (req, res) {
         console.log(err)
         res.json({})
       } else {
-        console.log(data)
         res.json(data)
       }
     },
@@ -288,6 +286,7 @@ const topTenCategories = async function (req, res) {
   )
 }
 
+//GET /user/:user-id/mostReviewedCategoryByUser
 const mostReviewedCategoryByUser = async function (req, res) {
   const id = req.params.user_id
   connection.query(
@@ -311,6 +310,7 @@ const mostReviewedCategoryByUser = async function (req, res) {
         console.log(err)
         res.json({})
       } else {
+        console.log(data)
         res.json(data)
       }
     },

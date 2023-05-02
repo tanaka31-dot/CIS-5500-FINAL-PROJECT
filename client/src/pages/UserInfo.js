@@ -17,6 +17,7 @@ function useUserData(userId) {
     const [user, setUser] = useState([])
     const [reviews, setReviews] = useState([])
     const [tips, setTips] = useState([])
+    const [categoryByUser, setCategoryByUser] = useState([])
 
     useEffect(() => {
       fetch(
@@ -36,14 +37,21 @@ function useUserData(userId) {
       )
         .then((res) => res.json())
         .then((resJson) => setTips(resJson))
+
+      fetch(
+        `http://${config.server_host}:${config.server_port}/user/${userId}/mostReviewedCategoryByUser`,
+      )
+        .then((res) => res.json())
+        .then((resJson) => setCategoryByUser(resJson))
+
     }, [userId])
   
-    return { user, reviews, tips }
+    return { user, reviews, tips, categoryByUser}
 }
 
 function UserPage() {
     const { user_id } = useParams()
-    const { user, reviews, tips } = useUserData(user_id)
+    const { user, reviews, tips, categoryByUser } = useUserData(user_id)
     const friendsIds = user.friends ? user.friends.split(",").map(str => parseInt(str, 10)) : null;
 
     return(
@@ -73,18 +81,16 @@ function UserPage() {
                 </div>
             )}
 
-            {/* {friendsIds && Array.isArray(friendsIds) && (
-                <div className="user-friends">
-                <h3>Friends:</h3>
-                    {friendsIds.map((friend, index) => (
-                        <div className="friend-item" key={friend.id}>
-                            <NavLink to={`/user/${friend}`}>
-                                <div className="friend-name">Friend {index}</div>
-                            </NavLink>
-                        </div>
+            {categoryByUser && Array.isArray(categoryByUser) && (
+                <div className="category-by-user">
+                    <h3>Top Five Most Reviewed Business Categories:</h3>
+                    {categoryByUser.map((cat, index) => (
+                        <div className="category-item" key={cat.id}>
+                            <span><strong>Number {index}</strong>: </span>{cat.category}<br />
+                        </div>    
                     ))}
-                </div> 
-            )} */}
+                </div>
+            )}
 
             {friendsIds && Array.isArray(friendsIds) && (
             <div className="user-friends">
