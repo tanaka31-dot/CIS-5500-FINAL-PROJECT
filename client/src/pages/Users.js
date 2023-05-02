@@ -214,7 +214,7 @@ export default function UsersPage() {
               <Container style={flexFormat}>
                   {users
                       .map((user) => (
-                        <NavLink to = {`/users/${user.user_id}`} style={{ textDecoration: 'none' }}>
+                        <NavLink to = {`/user/${user.user_id}`} style={{ textDecoration: 'none' }}>
                           <Box key={user.user_id} style = {userCard} sx = {{ ':hover': userCardHover }}> 
                           <div style={{display: 'flex', flexDirection: 'row'}}>
                               <h1 style={{ color: 'blue', margin: '0px 20px 0px', borderRight: '6px light blue'}}>

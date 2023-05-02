@@ -18,10 +18,9 @@ connection.connect((err) => err && console.log(err))
  Route 1: GET /user/:user-id
  Given a user_id, returns all information about the user
  */
-const user = async function (req, res) {
-
+ const user = async function (req, res) {
+  //Given a user_id, returns all information about the user
   const id = req.params.user_id
-
   connection.query(
     `
   SELECT *
@@ -404,6 +403,43 @@ const search_businesses = async function(req, res) {
       });
 }
 
+//GET user/:user-id/reviews
+const userReviews = async function (req, res) {
+  const id = req.params.user_id
+  connection.query(
+    `SELECT b.name, r.*
+     FROM Review r JOIN Business b ON r.business_id = b.business_id
+     WHERE r.user_id = ${id}`,
+    (err, data) => {
+      if (err || data.length === 0) {
+        console.log(err)
+        res.json({})
+      } else {
+        res.json(data)
+      }
+    },
+  )
+}
+
+//GET user/:user-id/tips
+const userTips = async function (req, res) {
+  const id = req.params.user_id
+  connection.query(
+    `SELECT b.name, t.*
+    FROM Tip t JOIN Business b ON t.Business_id = b.business_id
+    WHERE t.user_id = ${id}`,
+    (err, data) => {
+      if (err || data.length === 0) {
+        console.log(err)
+        res.json({})
+      } else {
+        res.json(data)
+      }
+    },
+  )
+}
+
+
 
 module.exports = {
   user,
@@ -417,4 +453,6 @@ module.exports = {
   businessesInCategory,
   mostReviewedCategoryByUser,
   search_businesses,
+  userReviews,
+  userTips,
 }

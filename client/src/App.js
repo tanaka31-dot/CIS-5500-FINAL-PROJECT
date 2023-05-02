@@ -6,6 +6,7 @@ import Navbar from './components/NavBar'
 import OneBusinessPage from './pages/BusinessInfo'
 import CategoryBusinesses from './pages/CategoryBusinesses'
 import BusinessSearch from './pages/BusinessSearch'
+import UserPage from './pages/UserInfo'
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/users" element={<UsersPage />} />
           <Route path="/bussinesses/:category" element={<CategoryBusinesses/>}/>
           <Route path="/search/businesses" element={<BusinessSearch />} />
+          <Route path="/user/:user_id" element={<UserPage />} />
         </Routes>
       </BrowserRouter>
     </div>
