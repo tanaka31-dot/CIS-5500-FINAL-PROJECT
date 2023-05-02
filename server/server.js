@@ -25,6 +25,8 @@ app.get('/user/:user_id/mostReviewedCategoryByUser', routes.mostReviewedCategory
 app.get('/search/businesses', routes.search_businesses)
 app.get('/user/:user_id/reviews', routes.userReviews)
 app.get('/user/:user_id/tips', routes.userTips)
+app.get('/weekends', routes.weekends)
+app.get('/topCities', routes.topCities)
 
 app.listen(config.server_port, () => {
   console.log(

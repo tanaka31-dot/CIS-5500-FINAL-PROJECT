@@ -7,6 +7,8 @@ import OneBusinessPage from './pages/BusinessInfo'
 import CategoryBusinesses from './pages/CategoryBusinesses'
 import BusinessSearch from './pages/BusinessSearch'
 import UserPage from './pages/UserInfo'
+import Weekends from './pages/Weekends'
+import TopCitiesPage from './pages/TopCities'
 
 function App() {
   return (
@@ -21,6 +23,8 @@ function App() {
           <Route path="/bussinesses/:category" element={<CategoryBusinesses/>}/>
           <Route path="/search/businesses" element={<BusinessSearch />} />
           <Route path="/user/:user_id" element={<UserPage />} />
+          <Route path="/weekends" element={<Weekends />} />
+          <Route path="/topCities" element={<TopCitiesPage/>}></Route>
         </Routes>
       </BrowserRouter>
     </div>

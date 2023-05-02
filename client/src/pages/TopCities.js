@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { NavLink } from 'react-router-dom'
 const config = require('../config.json')
 
 
-function HomePage() {
+function TopCitiesPage() {
   const bodyStyle = {
     backgroundColor: 'white',
     display: 'flex',
@@ -11,37 +10,20 @@ function HomePage() {
     alignItems: 'center',
   };
 
-  const imageStyle = {
-    width: '100%',
-    height: 'auto',
-    marginBottom: '50px',
-  };
-
-  const [cards, setCards] = useState([]);
+  const [cities, setCities] = useState([]);
 
   useEffect(() => {
     fetch(
-      `http://${config.server_host}:${config.server_port}/topTenCategories`,
+      `http://${config.server_host}:${config.server_port}/topCities`,
     )
       .then((res) => res.json())
-      .then((resJson) => setCards(resJson))
+      .then((resJson) => setCities(resJson))
   }, [])
-
-  
 
 
   return (
     <div style={bodyStyle}>
-      <img src="./homepage.jpeg" alt="homepage" style={imageStyle} />
-      <button style={{ justifyContent: "center" }}>
-        <NavLink to="/weekends">Open only on weekends</NavLink>
-        </button>
-        <button style={{ justifyContent: "center" }}>
-        <NavLink to={`/topCities`}>
-          Top Cities
-        </NavLink>
-        </button>
-      <h2 style={{justifyContent: "center"}}>Top Ten Categories</h2>
+      <h2 style={{justifyContent: "center"}}>Top Cities by Average Quality and Activity of Business</h2>
       <div style={{ 
         display: 'flex',
         flexWrap: 'wrap',
@@ -49,9 +31,9 @@ function HomePage() {
         width: '100%',
         alignItems: 'center'
       }}>
-        {cards.map((card, index) => (
+        {cities.map((city, index) => (
           <div
-            key={card.category}
+            key={city.city}
             style={{
               margin: '20px',
               backgroundColor: 'white',
@@ -72,12 +54,7 @@ function HomePage() {
             }}
           >
             <div style={{ marginTop: 'auto' }}>
-            <NavLink
-              to={`/bussinesses/${card.category}`}
-              style={{ textDecoration: 'underline', color: "black"}}
-            >
-              <p style={{ fontSize: '16px' }}>{card.category}</p>
-            </NavLink>
+              <p style={{ fontSize: '16px' }}>{city.city}</p>
             </div>
           </div>
         ))}
@@ -86,6 +63,4 @@ function HomePage() {
   );  
 }
 
-export default HomePage;
-
-
+export default TopCitiesPage;

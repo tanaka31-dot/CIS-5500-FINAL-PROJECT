@@ -118,9 +118,6 @@ const users = async function (req, res) {
   const pageSize = req.query.pageSize
   const offset = (page - 1) * pageSize
 
-  console.log("Page: " + page)
-  console.log("Page SIze:  " + pageSize)
-
   const name = req.query.name ?? '';
   const review_count = req.query.review_count ?? 0;
   const useful = req.query.useful ?? 0;
@@ -439,6 +436,60 @@ const userTips = async function (req, res) {
   )
 }
 
+const weekends = async function (req, res) {
+  connection.query(
+    `WITH temp AS (
+      SELECT bh.business_id, name, stars, monday, tuesday, wednesday, thursday, friday, saturday, sunday
+      FROM Business
+      JOIN Business_Hours bh ON Business.business_id = bh.business_id
+      WHERE monday = 'None' AND tuesday = 'None' AND wednesday = 'None' AND thursday = 'None'
+        AND friday != 'None' AND saturday != 'None' AND sunday != 'None'
+      )
+      SELECT business_id, name, AVG(stars) AS rating
+      FROM temp
+      GROUP BY name
+      ORDER BY rating DESC;`,
+    (err, data) => {
+      if (err || data.length === 0) {
+        console.log(err)
+        res.json({})
+      } else {
+        console.log(data.length)
+        res.json(data)
+      }
+    },
+  )
+}
+
+/*
+GET /topCities
+Gets cities with with highest average star rating and activity across all buildings 
+*/
+const topCities = async function (req, res) {
+
+  connection.query(
+    `
+    WITH Cities AS (
+      SELECT b.city, AVG(b.stars) AS avg_business_rating, COUNT(DISTINCT t.tip_id) AS num_tips
+      FROM Business b
+      JOIN Tip t ON b.business_id=t.business_id
+      GROUP BY b.city
+    )
+    SELECT city, (avg_business_rating * num_tips) AS ranking
+    FROM Cities
+    ORDER BY ranking DESC 
+    LIMIT 15
+  `,
+    (err, data) => {
+      if (err || data.length === 0) {
+        console.log(err)
+        res.json([])
+      } else {
+        res.json(data)
+      }
+    },
+  )
+}
 
 
 module.exports = {
@@ -455,4 +506,6 @@ module.exports = {
   search_businesses,
   userReviews,
   userTips,
+  weekends,
+  topCities,
 }
