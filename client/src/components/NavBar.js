@@ -12,11 +12,11 @@ function Navbar() {
         <NavLink to="/businesses">
           Businesses
         </NavLink>
-        <NavLink to="/users" activeClassName="active">
+        <NavLink to="/users">
           Users
         </NavLink>
-        <NavLink to="/">
-          Reviews
+        <NavLink to="/search/businesses">
+          Search Businesses
         </NavLink>
       </div>
     </nav>
