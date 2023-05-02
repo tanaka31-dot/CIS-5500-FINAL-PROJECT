@@ -83,7 +83,7 @@ function UserPage() {
 
             {categoryByUser && Array.isArray(categoryByUser) && (
                 <div className="category-by-user">
-                    <h3>Top Five Most Reviewed Business Categories:</h3>
+                    <h3>Most Reviewed Business Categories:</h3>
                     {categoryByUser.map((cat, index) => (
                         <div className="category-item" key={cat.id}>
                             <span><strong>Number {index}</strong>: </span>{cat.category}<br />
