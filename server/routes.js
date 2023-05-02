@@ -105,22 +105,62 @@ const businesses = async function (req, res) {
 
 //GET /users
 const users = async function (req, res) {
-  const page = req.query.page
-  const pageSize = req.query.page_size
+  const page = req.query.page ?? 1
+  const pageSize = req.query.pageSize
   const offset = (page - 1) * pageSize
 
+  console.log("Page: " + page)
+  console.log("Page SIze:  " + pageSize)
+
+  const name = req.query.name ?? '';
+  const review_count = req.query.review_count ?? 0;
+  const useful = req.query.useful ?? 0;
+  const funny = req.query.funny ?? 0;
+  const cool = req.query.cool ?? 0;
+  const fans = req.query.fans ?? 0;
+  const average_stars_low = req.query.average_stars_low ?? 0;
+  const average_stars_high = req.query.average_stars_high ?? 5;
+  const ordered_by = req.query.ordered_by ?? 'review_count'
+
+  q = `
+  SELECT *
+  FROM User
+  WHERE (
+    (name LIKE '%${name}%')
+    AND (review_count >= ${review_count})
+    AND (useful >= ${useful})
+    AND (funny >= ${funny})
+    AND (cool >= ${cool})
+    AND (fans >= ${fans})
+    AND (average_stars >= ${average_stars_low}) AND (average_stars <= ${average_stars_high})
+  )
+  ORDER BY ${ordered_by} DESC, name
+  LIMIT ${pageSize}
+  OFFSET ${offset} 
+  `
+  
   connection.query(`
-    SELECT *
-    FROM User
-    ORDER BY review_count DESC
-    LIMIT ${pageSize}
-    OFFSET ${offset}
+  SELECT *
+  FROM User
+  WHERE (
+    (name LIKE '%${name}%')
+    AND (review_count >= ${review_count})
+    AND (useful >= ${useful})
+    AND (funny >= ${funny})
+    AND (cool >= ${cool})
+    AND (fans >= ${fans})
+    AND (average_stars >= ${average_stars_low}) AND (average_stars <= ${average_stars_high})
+  )
+  ORDER BY ${ordered_by} DESC, name
+  LIMIT ${pageSize}
+  OFFSET ${offset} 
   `,(err, data) => {
       if (err || data.length === 0) {
         console.log(err)
         res.json([])
       } else {
         res.json(data)
+        console.log(q)
       }
     },
   )
@@ -136,7 +176,6 @@ const businessReviews = async function (req, res) {
     WHERE r.business_id = ${id}`,
     (err, data) => {
       if (err || data.length === 0) {
-        console.log(err)
         res.json({})
       } else {
         res.json(data)
