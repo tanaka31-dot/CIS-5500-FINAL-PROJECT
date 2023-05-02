@@ -89,7 +89,7 @@ export default function UsersPage() {
                   {users
                       .slice((page - 1) * pageSize, page * pageSize)
                       .map((user) => (
-                        <NavLink to = {`/users/${user.user_id}`} style={{ textDecoration: 'none' }}>
+                        <NavLink to = {`/user/${user.user_id}`} style={{ textDecoration: 'none' }}>
                           <Box key={user.user_id} style={userCard} sx = {{ ':hover': userCardHover }}>                          
                               <img src={require('./profile_icon.png')} width= '50px' height = '50px' style={{verticalAlign: 'middle'}} alt=''/>
                               <h2 style={{ color: 'blue', margin: '20px 20px 10px', borderRight: '6px light blue'}}>

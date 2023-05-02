@@ -96,7 +96,6 @@ const businesses = async function (req, res) {
         console.log(err)
         res.json([])
       } else {
-        //console.log(data)
         res.json(data)
       }
     },
@@ -129,7 +128,6 @@ const users = async function (req, res) {
 //GET businesses/:business_id/reviews
 const businessReviews = async function (req, res) {
   const id = req.params.business_id
-
   connection.query(
     `SELECT u.name, r.*
     FROM Review r JOIN User u ON r.user_id = u.user_id 
@@ -229,6 +227,44 @@ const businessHours = async function (req, res) {
   )
 }
 
+//GET user/:user-id/reviews
+const userReviews = async function (req, res) {
+  const id = req.params.user_id
+  connection.query(
+    `SELECT b.name, r.*
+     FROM Review r JOIN Business b ON r.business_id = b.business_id
+     WHERE r.user_id = ${id}`,
+    (err, data) => {
+      if (err || data.length === 0) {
+        console.log(err)
+        res.json({})
+      } else {
+        console.log("REVIEW DATA :", data)
+        res.json(data)
+      }
+    },
+  )
+}
+
+//GET user/:user-id/tips
+const userTips = async function (req, res) {
+  const id = req.params.user_id
+  connection.query(
+    `SELECT b.name, t.*
+    FROM Tip t JOIN Business b ON t.Business_id = b.business_id
+    WHERE t.user_id = ${id}`,
+    (err, data) => {
+      if (err || data.length === 0) {
+        console.log(err)
+        res.json({})
+      } else {
+        console.log(data)
+        res.json(data)
+      }
+    },
+  )
+}
+
 const topTenCategories = async function (req, res) {
   connection.query(
     `
@@ -252,6 +288,35 @@ const topTenCategories = async function (req, res) {
   )
 }
 
+const mostReviewedCategoryByUser = async function (req, res) {
+  const id = req.params.user_id
+  connection.query(
+    `
+    SELECT
+    SUBSTRING_INDEX(SUBSTRING_INDEX(b.categories, ';', n.n), ',', -1) AS category,
+    COUNT(*) AS count
+    FROM
+    Review r
+    INNER JOIN
+    Business b ON r.business_id = b.business_id
+    INNER JOIN
+    (SELECT 1 AS n UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5) n
+    ON LENGTH(b.categories) - LENGTH(REPLACE(b.categories, ',', '')) >= n.n - 1
+    WHERE r.user_id = ${id}
+    GROUP BY category
+    ORDER BY count DESC
+    LIMIT 5;
+    `, (err, data) => {
+      if (err || data.length === 0) {
+        console.log(err)
+        res.json({})
+      } else {
+        res.json(data)
+      }
+    },
+  )
+}
+
 module.exports = {
   user,
   users,
@@ -260,5 +325,8 @@ module.exports = {
   businessReviews,
   businessTips,
   businessHours,
+  userReviews,
+  userTips,
   topTenCategories,
+  mostReviewedCategoryByUser,
 }

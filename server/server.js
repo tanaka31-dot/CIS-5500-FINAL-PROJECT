@@ -18,6 +18,8 @@ app.get('/businesses', routes.businesses)
 app.get('/business/:business_id/reviews', routes.businessReviews)
 app.get('/business/:business_id/tips', routes.businessTips)
 app.get('/business/:business_id/hours', routes.businessHours)
+app.get('/user/:user_id/reviews', routes.userReviews)
+app.get('/user/:user_id/tips', routes.userTips)
 app.get('/topTenCategories', routes.topTenCategories)
 app.get('/users', routes.users)
 
