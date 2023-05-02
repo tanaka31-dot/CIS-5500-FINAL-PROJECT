@@ -18,6 +18,10 @@ function Navbar() {
         <NavLink to="/">
           Reviews
         </NavLink>
+        <NavLink to="/search/businesses">
+          Search Businesses
+
+        </NavLink>
       </div>
     </nav>
   )

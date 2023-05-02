@@ -1,0 +1,37 @@
+/* The code in this .css file is used to style the search form */
+
+
+.search-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.form-group-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group-checkbox {
+    display: inline-block;
+    flex-direction: column;
+}
+
+.form-row {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+}
+
+.form-group {
+    margin-right: 1rem;
+}
+
+button {
+    margin-top: 1rem;
+    grid-column: 1 / -1;
+}

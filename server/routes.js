@@ -252,6 +252,87 @@ const topTenCategories = async function (req, res) {
   )
 }
 
+const search_businesses = async function(req, res) {
+  console.log("enter query")
+    //default parameters for the query parameters
+    const queryParams = [
+        { key: 'city', value: req.query.city ?? '' },
+        { key: 'name', value: req.query.name ?? '' },
+        { key: 'state', value: req.query.state_abreviation ?? '' },
+        { key: 'postal_code', value: req.query.postal_code ?? 0 },
+        { key: 'stars', value: req.query.stars ?? 0 },
+        { key: 'review_count', value: req.query.review_count ?? 0 },
+        { key: 'is_open', value: req.query.is_open !== undefined ? (req.query.is_open === 'true' ? 1 : 0) : 0 },
+        { key: 'AcceptsInsurance', value: req.query.accepts_insurance !== undefined ? (req.query.accepts_insurance === 'true' ? 1 : 0) : 0 },
+        { key: 'ByAppointmentOnly', value: req.query.by_appointment_only !== undefined ? (req.query.by_appointment_only === 'true' ? 1 : 0) : 0 },
+        { key: 'BusinessAcceptsCreditCards', value: req.query.accept_creditcard !== undefined ? (req.query.accept_creditcard === 'true' ? 1 : 0) : 0 },
+        { key: 'BusinessParking_garage', value: req.query.garage_parking !== undefined ? (req.query.garage_parking === 'true' ? 1 : 0) : 0 },
+        { key: 'BusinessParking_lot', value: req.query.lot_parking !== undefined ? (req.query.lot_parking === 'true' ? 1 : 0) : 0 },
+        { key: 'BusinessParking_street', value: req.query.street_parking !== undefined ? (req.query.street_parking === 'true' ? 1 : 0) : 0 },
+        { key: 'BusinessParking_valet', value: req.query.valet_parking !== undefined ? (req.query.valet_parking === 'true' ? 1 : 0) : 0 },
+        { key: 'BYOB', value: req.query.b_YOB !== undefined ? (req.query.b_YOB === 'true' ? 1 : 0) : 0 },
+        { key: 'Open24Hours', value: req.query.open_24_hours !== undefined ? (req.query.open_24_hours === 'true' ? 1 : 0) : 0 },
+        { key: 'BusinessAcceptsBitcoin', value: req.query.accepts_bitcoin !== undefined ? (req.query.accepts_bitcoin === 'true' ? 1 : 0) : 0 },
+        { key: 'DogsAllowed', value: req.query.dogs_allowed !== undefined ? (req.query.dogs_allowed === 'true' ? 1 : 0) : 0 },
+        { key: 'DriveThru', value: req.query.drive_thru !== undefined ? (req.query.drive_thru === 'true' ? 1 : 0) : 0 },
+        { key: 'RestaurantsDelivery', value: req.query.delivery !== undefined ? (req.query.delivery === 'true' ? 1 : 0) : 0 },
+        { key: 'OutdoorSeating', value: req.query.outdoor_seating !== undefined ? (req.query.outdoor_seating === 'true' ? 1 : 0) : 0 },
+        { key: 'GoodForDancing', value: req.query.good_for_dancing !== undefined ? (req.query.good_for_dancing === 'true' ? 1 : 0) : 0 },
+        { key: 'HappyHour', value: req.query.happy_hour !== undefined ? (req.query.happy_hour === 'true' ? 1 : 0) : 0 },
+        { key: 'RestaurantsTakeOut', value: req.query.take_out !== undefined ? (req.query.take_out === 'true' ? 1 : 0) : 0 },
+        { key: 'RestaurantsReservations', value: req.query.reservations !== undefined ? (req.query.reservations === 'true' ? 1 : 0) : 0 },
+        { key: 'WiFi', value: req.query.w_ifi !== undefined ? (req.query.w_ifi === 'true' ? 1 : 0) : 0 },
+        { key: 'RestaurantsGoodForGroups', value: req.query.good_for_groups !== undefined ? (req.query.good_for_groups === 'true' ? 1 : 0) : 0 },
+        { key: 'Ambience_casual', value: req.query.casual !== undefined ? (req.query.casual === 'true' ? 1 : 0) : 0 },
+        { key: 'Ambience_upscale', value: req.query.upscale !== undefined ? (req.query.upscale === 'true' ? 1 : 0) : 0 },
+        { key: 'Ambience_trendy', value: req.query.trendy !== undefined ? (req.query.trendy === 'true' ? 1 : 0) : 0 },
+        { key: 'Ambience_touristy', value: req.query.touristy !== undefined ? (req.query.touristy === 'true' ? 1 : 0) : 0 },
+        { key: 'Ambience_divey', value: req.query.divey !== undefined ? (req.query.divey === 'true' ? 1 : 0) : 0 },
+        { key: 'Ambience_hipster', value: req.query.hipster !== undefined ? (req.query.hipster === 'true' ? 1 : 0) : 0 },
+        { key: 'Ambience_classy', value: req.query.classy !== undefined ? (req.query.classy === 'true' ? 1 : 0) : 0 },
+        { key: 'Ambience_intimate', value: req.query.intimate !== undefined ? (req.query.intimate === 'true' ? 1 : 0) : 0 },
+        { key: 'Ambience_romantic', value: req.query.romantic !== undefined ? (req.query.romantic === 'true' ? 1 : 0) : 0 },
+        { key: 'Alcohol', value: req.query.alcohol !== undefined ? (req.query.alcohol === 'true' ? 1 : 0) : 0 },
+    ];
+    //base query string
+    let queryString = "SELECT * FROM Business b JOIN Business_Attributes ba ON b.business_id = ba.business_id WHERE 1=1";
+
+    //dynamically creates query based on the input query parameters
+    queryParams.forEach(param => {
+        console.log(param)
+        if (param.value !== '' && param.value !== 0) {
+            if (typeof param.value === 'number') {
+                queryString += ` AND ${param.key} = ${param.value}`;
+            } else {
+                queryString += ` AND ${param.key} LIKE '%${param.value}%'`;
+            }
+        }
+    });
+
+    // Add the ORDER BY
+    queryString += ' ORDER BY stars DESC';
+
+    // Add the LIMIT clause to get only the top 100 results
+    queryString += ' LIMIT 100';
+
+
+  console.log("Server Side--Request received with query:", queryString);
+
+  connection.query(
+        queryString,
+      (err, data) => {
+        if (err) {
+          console.error('Error executing query:', err);
+          res.json({});
+        } else {
+          console.log("Response sent:", data.length);
+          res.setHeader('Content-Type', 'application/json');
+          res.json(data);
+        }
+      });
+}
+
+
 module.exports = {
   user,
   users,
@@ -263,4 +344,5 @@ module.exports = {
   fiveTips,
   businessHours,
   topTenCategories,
+  search_businesses
 }
