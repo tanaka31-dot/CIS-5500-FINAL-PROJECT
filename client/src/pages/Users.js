@@ -1,9 +1,15 @@
 import { useEffect, useState } from 'react'
 import { Box, Container, Pagination } from '@mui/material'
+import { Button, Slider } from '@mui/material';
 import { NavLink } from 'react-router-dom'
-import Navbar from '../components/NavBar'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faLightbulb,
+  faFaceGrinSquint,
+  faFaceSurprise,
+  faUser,
+} from '@fortawesome/free-regular-svg-icons'
 import '../components/styles.css'
-// import profile_icon from './profile_icon.png'
 
 const config = require('../config.json')
 
@@ -11,23 +17,47 @@ export default function UsersPage() {
     const pageSize = 20
     const [users, setUsers] = useState([])
     const [page, setPage] = useState(1)
-    const totalPages = Math.ceil(users.length / pageSize)
+
+    const [name, setName] = useState('');
+    const [review_count, setReviewCount] = useState(0);
+    const [useful, setUseful] = useState(0);
+    const [funny, setFunny] = useState(0);
+    const [cool, setCool] = useState(0);
+    const [fans, setFans] = useState(0);
+    const [average_stars, setStars] = useState([0, 5]);
+    const [ordered_by, setOrder] = useState('review_count');
+
 
 
     useEffect(() => {
         fetch(
-          `http://${config.server_host}:${config.server_port}/users?page=${page}&page_size=${pageSize}`,
+          `http://${config.server_host}:${config.server_port}/users?page=${page}&pageSize=${pageSize}` +
+          `&name=${name}&review_count=${review_count}&useful=${useful}&funny=${funny}&cool=${cool}&fans=${fans}` +
+          `&average_stars_low=${average_stars[0]}&average_stars_high=${average_stars[1]}&ordered_by=${ordered_by}`
         )
           .then((res) => res.json())
           .then((resJson) => setUsers(resJson))
-      }, [page, pageSize])
+      }, [page])
 
+    const search = () => {
+      fetch(
+        `http://${config.server_host}:${config.server_port}/users?page=${page}&pageSize=${pageSize}` +
+        `&name=${name}&review_count=${review_count}&useful=${useful}&funny=${funny}&cool=${cool}&fans=${fans}` +
+        `&average_stars_low=${average_stars[0]}&average_stars_high=${average_stars[1]}&ordered_by=${ordered_by}`
+      )
+        .then((res) => res.json())
+        .then((resJson) => setUsers(resJson))
+    }
 
 
     const bodyStyle = {
-        backgroundImage: `url(${require('./skyline.jpg')})`,
+        // backgroundImage: `url(${require('./skyline.jpg')})`,
+        backgroundColor: 'lightblue',
         backgroundSize: '100% auto',
         backgroundPosition: 'center center',
+        display: 'flex',
+        flexDirection: 'row',
+        //position: "fixed"
       }
 
       const userCard = {
@@ -38,19 +68,33 @@ export default function UsersPage() {
         margin: '10px',
         padding: '10px',
         display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
         transition: 'all .2s ease-in-out',
-        backgroundColor : '#cceeff'
+        backgroundColor : '#cceeff',
+      }
+
+      const filterCard = {
+        width: '25%',
+        height: '80%',
+        border: '1px solid lightgrey',
+        borderRadius: '40px',
+        margin: '30px',
+        padding: '10px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        transition: 'all .2s ease-in-out',
+        backgroundColor : '#cceeff',
+        //position: 'fixed',
+        
       }
 
       const handlePageChange = (e, newPage) => {
         // Can always go to previous page (TablePagination prevents negative pages)
         // but only fetch next page if we haven't reached the end (currently have full page of data)
-        if (newPage < page && users.length === pageSize) {
-          // Note that we set newPage + 1 since we store as 1 indexed but the default pagination gives newPage as 0 indexed
-          setPage(newPage + 1)
-        }
+        setPage(newPage)
+        
       }
 
       function interpolateColors(color1, color2, ratio) {
@@ -71,7 +115,7 @@ export default function UsersPage() {
     
       const userCardHover = {
         transform: 'scale(1.05)',
-        boxShadow: '2px 2px 10px lightgrey',
+        boxShadow: '2px 2px 10px darkgrey',
       }
     
       const flexFormat = {
@@ -82,33 +126,122 @@ export default function UsersPage() {
       }
 
       return (
-        <div>
-          <Navbar/>
-            <div style = {bodyStyle}>
+        <div style={bodyStyle}>
+            <div className="filter-block"style={filterCard}>
+              <h2>Search Users</h2>
+              <form style={{marginLeft: '20px'}}>
+                <label>
+                  Name: {'    '}
+                  <input type="text" name="name" value={name} onChange={(e) => setName(e.target.value)} style={{borderRadius: '30px'}}/>
+                </label>
+                <div style={{display: 'flex'}}>
+                  <p style={{marginRight: '10px'}}>Ordered by:</p>
+                  <select onChange={(e) => setOrder(e.target.value)} style={{marginTop: '15px', width: '200px', height: '20px'}}>
+                    <option value="review_count">Number of Reviews</option>
+                    <option value="average_stars">Average Rating</option>
+                    <option value="fans">Fans</option>
+                    <option value="useful">Usefuls</option>
+                    <option value="funny">Funnys</option>
+                    <option value="cool">Cools</option>
+                  </select>
+                </div>
+                <p>Average Rating:</p>
+                <Slider
+                  value={average_stars}
+                  min={0}
+                  max={5}
+                  step={.01}
+                  onChange={(e, newValue) => setStars(newValue)}
+                  valueLabelDisplay='auto'
+                  valueLabelFormat={value => <div>{value}</div>}
+                />
+                <p>Number of Reviews:</p>
+                <Slider
+                  value={review_count}
+                  min={0}
+                  max={15000}
+                  step={1}
+                  onChange={(e, newValue) => setReviewCount(newValue)}
+                  valueLabelDisplay='auto'
+                  valueLabelFormat={value => <div>{value}</div>}
+                />
+                <p>Fans:</p>
+                <Slider
+                  value={fans}
+                  min={0}
+                  max={1000}
+                  step={1}
+                  onChange={(e, newValue) => setFans(newValue)}
+                  valueLabelDisplay='auto'
+                  valueLabelFormat={value => <div>{value}</div>}
+                />
+                <p>Usefuls:</p>
+                <Slider
+                  value={useful}
+                  min={0}
+                  max={1000}
+                  step={1}
+                  onChange={(e, newValue) => setUseful(newValue)}
+                  valueLabelDisplay='auto'
+                  valueLabelFormat={value => <div>{value}</div>}
+                />
+                <p>Funnys:</p>
+                <Slider
+                  value={funny}
+                  min={0}
+                  max={1000}
+                  step={1}
+                  onChange={(e, newValue) => setFunny(newValue)}
+                  valueLabelDisplay='auto'
+                  valueLabelFormat={value => <div>{value}</div>}
+                />
+                <p>Cools:</p>
+                <Slider
+                  value={cool}
+                  min={0}
+                  max={1000}
+                  step={1}
+                  onChange={(e, newValue) => setCool(newValue)}
+                  valueLabelDisplay='auto'
+                  valueLabelFormat={value => <div>{value}</div>}
+                />
+                <Button onClick={() => search() } style={{ left: '50%', transform: 'translateX(-50%)' }}>
+                  Search
+                </Button>
+              </form>
+            </div>
+            <div style = {{}}>
               <Container style={flexFormat}>
                   {users
-                      .slice((page - 1) * pageSize, page * pageSize)
                       .map((user) => (
                         <NavLink to = {`/users/${user.user_id}`} style={{ textDecoration: 'none' }}>
-                          <Box key={user.user_id} style={userCard} sx = {{ ':hover': userCardHover }}>                          
-                              <img src={require('./profile_icon.png')} width= '50px' height = '50px' style={{verticalAlign: 'middle'}} alt=''/>
-                              <h2 style={{ color: 'blue', margin: '20px 20px 10px', borderRight: '6px light blue'}}>
-                                {user.name}
-                              </h2>
-                              <h2 style = {{color: 'black', margin: '20px 20px 10px'}}>
-                                Joined: {user.yelping_since}
-                              </h2>
-                              <h2 style = {{color: 'black', margin: '20px 20px 10px'}}>
-                                Reviews: {user.review_count}
-                              </h2>
-                              <h2 style = {{color: 'black', margin: '20px 20px 10px'}}>
-                                Elite: {user.elite}
-                              </h2>
-                              <h2 style = {{color: 'black', margin: '20px 20px 10px'}}>
-                                Fans: {user.fans}
-                              </h2>
-                              <div style={{color: "black",  marginTop: '10px', display: 'flex' }}>
-                                Average Stars: {user.average_stars}
+                          <Box key={user.user_id} style = {userCard} sx = {{ ':hover': userCardHover }}> 
+                          <div style={{display: 'flex', flexDirection: 'row'}}>
+                              <h1 style={{ color: 'blue', margin: '0px 20px 0px', borderRight: '6px light blue'}}>
+                                <img src={require('./profile_icon.png')} width= '50px' height = '50px' style={{verticalAlign: 'middle'}} alt=''/>
+                                {'     '}{user.name}
+                              </h1>
+                          </div>                        
+                            <div className="icon-container" style={{fontSize: '10px', margin: "20px 0px 0px 0px"}}>
+                                  <div className="icon-wrapper" style={{borderRadius: "60px", color: "black", backgroundColor: "white"}}>
+                                    <FontAwesomeIcon icon={faUser} />
+                                    <span className="text">Fans {user.fans}</span>
+                                  </div>
+                                  <div className="icon-wrapper" style={{borderRadius: "60px", color: "black", backgroundColor: "white"}}>
+                                    <FontAwesomeIcon icon={faLightbulb} />
+                                    <span className="text">Useful {user.useful}</span>
+                                  </div>
+                                  <div className="icon-wrapper" style={{borderRadius: "60px", color: "black", backgroundColor: "white"}}>
+                                    <FontAwesomeIcon icon={faFaceGrinSquint} />
+                                    <span className="text">Funny {user.funny}</span>
+                                  </div>
+                                  <div className="icon-wrapper" style={{borderRadius: "60px", color: "black", backgroundColor: "white"}}>
+                                    <FontAwesomeIcon icon={faFaceSurprise} />
+                                    <span className="text">Cool {user.cool}</span>
+                                  </div>
+                                </div>
+                          <h4 style={{color: "black",  marginTop: '10px', marginBottom: '10px', marginLeft: '10px', display: 'flex' }}>
+                              {'Average Rating:    '}
                                 {Array.from({ length: 5 }, (_, i) => {
                                   let color = 'lightgrey'
                                   if (i < Math.floor(user.average_stars)) {
@@ -144,16 +277,21 @@ export default function UsersPage() {
                                     </div>
                                   )
                                 })}
-                              </div>
+                                ({user.review_count} reviews)
+                              </h4>
+                              <h4 style = {{color: 'black', margin: '0px 20px 10px 10px'}}>
+                                Elite Years: {user.elite}
+                              </h4>
                           </Box>
                         </NavLink>
                       ))}
               </Container>
               <Pagination
-                  count={totalPages}
+                  count={63000}
                   page={page}
                   onChange={handlePageChange}
                   color="primary"
+                  style={{marginLeft: "25%"}}
               />
             </div>
         </div>
